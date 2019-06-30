@@ -1,63 +1,86 @@
 const miBack = require('../middleware/mi-back')
 const mongoose = require("mongoose");
-const Block = mongoose.model('Block')
+const User = mongoose.model('User')
 module.exports = {
   index: async(ctx, next) => {
     // console.log(ctx)
   },
   // 存入数据库
-  saveBlock: async(ctx, next) => {
+  saveUser: async(ctx, next) => {
     const params = ctx.request.body
-    const { peers, blocks } = params
+    const { name, age, like } = params
     console.log(params)
-    if (peers && blocks) {
+    if (name && age && like) {
       try {
-        let block = new Block({
-          peers,
-          blocks
+        let user = new User({
+          name, 
+          age, 
+          like
         })
-        block = block.save()
-        ctx.body = miBack(0, null)
+        user = user.save()
+        ctx.redirect('/user')
+        ctx.status = 301;
       } catch (e) {
-        ctx.body = miBack(1, null, e)
+        ctx.send('Server Error!!')
       }
     } else {
       ctx.body = miBack(1, null, '参数错误')
     }
   },
-  getBlock: async(ctx, next) => {
-    const block = await Block.find((err, item) => {
-      console.log(item)
+  getUser: async(ctx, next) => {
+    const data = await User.find((err, item) => {
+      console.log(item,ctx)
     })
-    if (block) {
-      ctx.body = miBack(0, block, 'success')
+    if (data) {
+      await ctx.render('index', {
+        user:data
+      })
     } else {
       ctx.body = miBack(1, null, '暂无数据')
     }
   },
-  delBlock: async(ctx, next) => {
-    const params = ctx.request.body
-    const result = await Block.where({
-      _id: params.id
+  add: async(ctx, next) => {
+    await ctx.render('useradd')
+  },
+  delUser: async(ctx, next) => {
+    const {id} = ctx.query
+    const result = await User.where({
+      _id: id
     }).remove()
     try {
       await result
       ctx.body = miBack(0, null)
+      ctx.redirect('/user')
     } catch (error) {
       ctx.body = miBack(1, null, 'fuck')
     }
   },
-  updateBlock: async(ctx, next) => {
-    const params = ctx.request.body
-    const result = await Block.where({
-      _id: params.id
+  update: async(ctx, next) => {
+    const {id} = ctx.query
+    const data = await User.findById(id,(err, item) => {
+      console.log(item,ctx)
+    })
+    if (data) {
+      await ctx.render('userUpdate', {
+        user:data
+      })
+    } else {
+      ctx.body = miBack(1, null, '暂无数据')
+    }
+  },
+  updateUser: async(ctx, next) => {
+    const {name, age, like, id } = ctx.request.body
+    const result = await User.where({
+      _id: id
     }).update({
-      peers: params.peers,
-      blocks: params.blocks
+      name, 
+      age, 
+      like
     })
     try {
       await result
-      ctx.body = miBack(0, null)
+      ctx.body = miBack(0, result, 'success')
+      ctx.redirect('/user')
     } catch (error) {
       ctx.body = miBack(1, null, 'fuck')
     }

@@ -4,6 +4,7 @@ const path = require('path')
 const fs = require('fs')
 const bodyParser = require('koa-bodyparser')
 // const nunjucks = require('koa-nunjucks-2')
+const views = require('koa-views')
 const cors = require('koa2-cors')
 const staticFiles = require('koa-static')
 const middleware = require('./middleware')
@@ -12,7 +13,7 @@ const app = new Koa()
 
 // 一定放在koa前面
 mongoose.Promise = require('bluebird')
-mongoose.connect('mongodb://127.0.0.1/tenggouwa',{useNewUrlParser: true})
+mongoose.connect('mongodb://localhost/db1',{useNewUrlParser: true})
 // 获取数据库表对应的js对象所在的路径
 const models_path = path.join(__dirname, './models')
 
@@ -46,13 +47,9 @@ app.use(staticFiles(path.resolve(__dirname, "./public")))
 
 
 // 使用模板引擎
-// app.use(nunjucks({
-//   ext: 'html',
-//   path: path.join(__dirname, 'views'),// 指定视图目录
-//   nunjucksConfig: {
-//     trimBlocks: true // 开启转义 防Xss
-//   }
-// }));
+app.use(views(path.join(__dirname, './views'), {
+  extension: 'ejs'
+}))
 
 // 解析post请求
 app.use(bodyParser())
