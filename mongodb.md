@@ -1,15 +1,17 @@
 #  MongoDB
 
-	- 官网 (http://mongoosejs.com)
+ - 官网：http://mongoosejs.com
 
  - 官方指南：https://mongoosejs.com/docs/guide.html
 
  - 官方API文档 ：https://mongoosejs.com/docs/api.html
 
+ - 参考手册：https://cnodejs.org/topic/548e54d157fd3ae46b233502
+
    ## 1.MongoDb数据库的基本概念
 
    - 可以有多个数据库
-   - 一个数据库可以有多个集合（表）
+   - 一个数据库可以有多个集合
    - 一个集合可以有多个文档（表记录）
    - 文档结构很灵活，没有任何限制
    - MongoDB非常灵活，不需要像MySQL一样先常见数据库，表，设计表结构
@@ -31,7 +33,7 @@
    
    // 连接 MongoDB 数据库
    mongoose.connect('mongodb://localhost/test', { useMongoClient: true });
-   
+    //test 数据库中的集合名称, 不存在会创建.
    mongoose.Promise = global.Promise;
    
    // 创建一个模型
@@ -136,9 +138,9 @@
 
    按条件查询所有：
 
-   ```javas
+   ```javascript
    User.find({
-     username: 'zs'
+     username: 'zs' //  查询正则/joe/i
    }, function (err, ret) {
      if (err) {
        console.log('查询失败')
@@ -146,10 +148,13 @@
        console.log(ret)
      }
    })
-   ```
-
+   
+//find( {"$where" :  "this.x + this.y === 10" } ).sort( {“username”:1 , “age”:-1 } // ).limit(3)	
+   //排序 键对应文档的键名, 值代表排序方向, 1 升序, -1降序
+```
+   
    按条件查询单个：
-
+   
    ```javas
    User.findOne({
      username: 'zs'
@@ -158,14 +163,14 @@
        console.log('查询失败')
      } else {
        console.log(ret)
-     }
+  }
    })
-   ```
-
-   ### 3.4删除数据
-
+```
+   
+### 3.4删除数据
+   
    根据条件删除所有
-
+   
    ```javascript
    User.remove({
      username: 'zs'
@@ -175,38 +180,38 @@
      } else {
        console.log('删除成功')
        console.log(ret)
-     }
+  }
    })
-   ```
-
+```
+   
    根据条件删除一个：
-
-   ```
+   
+```
    findOneAndRemove(conditions, options, callback)
-   ```
-
+```
+   
    根据id删除一个
-
-   ```
+   
+```
    findByIdAndRemove(id, options, callback)
-   ```
-
-   ### 3.5更新数据
-
+```
+   
+### 3.5更新数据
+   
    根据条件更新所有：
-
-   ```javascript
+   
+```javascript
    Model.update(query, { name: 'jason bourne' }, options, callback);
-   ```
-
+```
+   
    根据条件更新一个：
-
-   ```javas
+   
+```javas
    findOneAndUpdate(conditions, update, options, callback)
-   ```
-
+```
+   
    根据id更新一个：
-
+   
    ```javascript
    User.findByIdAndUpdate('5a001b23d219eb00c8581184', {
      password: '123'
@@ -215,10 +220,10 @@
        console.log('更新失败')
      } else {
        console.log('更新成功')
-     }
+  }
    })
    ```
-
+   
    
 
 
@@ -241,7 +246,7 @@
 
 - ## 启动
 
-  mongod --dbpath=D:\MongoDB\data\db  
+  mongod --dbpath=C:\data\db  
 
   需要手动新建目录/data/db
 

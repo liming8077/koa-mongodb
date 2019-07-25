@@ -11,31 +11,22 @@ var Schema = mongoose.Schema;
  * @type {mongoose}
  */
 var UserSchema = new Schema({
-  age: String,
-  name: String,
-  like: String,
-  meta: {
-    createAt: {
-      type: Date,
-      dafault: Date.now()
-    },
-    updateAt: {
-      type: Date,
-      dafault: Date.now()
-    }
-  }
+  age: { type:String, required: true },
+  name: { type:String, required: true },
+  like: { type:String, required: true },
+  time : { type:Date, default:Date.now },
 })
 
 // Defines a pre hook for the document.
-UserSchema.pre('save', function(next) {
-  if (this.isNew) {
-    this.meta.createAt = this.meta.updateAt = Date.now()
-  }
-  else {
-    this.meta.updateAt = Date.now()
-  }
-  next()
-})
+// UserSchema.pre('save', function(next) {
+//   if (this.isNew) {
+//     this.meta.createAt = this.meta.updateAt = Date.now()
+//   }
+//   else {
+//     this.meta.updateAt = Date.now()
+//   }
+//   next()
+// })
 
 
 /**

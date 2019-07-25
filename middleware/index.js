@@ -22,5 +22,4 @@ module.exports = (app) => {
     ]
   })
 
-  // 以下代码省略
 }
