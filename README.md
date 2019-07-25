@@ -1,10 +1,5 @@
 ## Koa2 + mongodb 简易后端脚手架
 
-> Author: Tenggouwa
-
-
-> Date: 2019.06.26
-
 ### 项目简介
 
 为了方便业务开发，所搭建的 **koa + mongodb** 脚手架，使用较为主流的内容搭建。
@@ -40,7 +35,6 @@
 
 + `yarn`或者`cnpm i`或者`npm i`
 + `nodemon app`或者`node app`
-+ 本地访问localhost:3000/getBlock或根据router.js使用postman测试
 
 ### 项目结构
 
